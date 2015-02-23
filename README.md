@@ -87,5 +87,5 @@ since
 view
 ```
 
+[PouchDB Replication Options](http://pouchdb.com/api.html#replication)
 [CouchDB Replication Options](http://wiki.apache.org/couchdb/Replication)
-
