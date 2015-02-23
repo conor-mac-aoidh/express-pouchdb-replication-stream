@@ -32,33 +32,28 @@ pouch.adapter('writeableStream', pouchRepStream.adapters.writeableStream);
  * http://wiki.apache.org/couchdb/Replication#Filtered_Replication
  */
 var ExpressPouchReplicationStream = function(opts){
-  this.url = typeof opts === 'string' ? opts : opts.url;
-  this.dbReq = !!opts.dbReq;
-  this.replicationOpts = opts.replication || {};
-  return this.run.bind(this);
-};
-
-/**
- * run
- *
- * Runs the actuall replication, streaming the output to
- * the response.
- *
- * @param req
- * @param res
- * @param next
- */
-ExpressPouchReplicationStream.prototype.run = function(req, res, next){
-  var url = this.url;
-  // db is passed in the request
-  if(this.dbReq){
-    url += '/' + req.params.db;
-  }
-  var db = new pouch(url);
-  db.dump(res, this.replicationOpts)
-    .catch(function(err){
-      res.send(err);
-    });
+  // parse options
+  var scope = {
+    url             : typeof opts === 'string' ? opts : opts.url,
+    dbReq           : !!opts.dbReq,
+    replicationOpts : {
+      filter        : opts.filter || '',
+      query_string  : opts.query_string || {}
+    }
+  };
+  // return function that fulfills the request
+  return function(req, res, next){  
+    var url = this.url;
+    // db is passed in the request
+    if(this.dbReq){
+      url += '/' + req.params.db;
+    }
+    var db = new pouch(url);
+    db.dump(res, this.replicationOpts)
+      .catch(function(err){
+        res.send(err);
+      });
+  }.bind(scope);
 };
 
 module.exports = ExpressPouchReplicationStream;
