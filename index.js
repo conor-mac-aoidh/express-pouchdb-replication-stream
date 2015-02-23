@@ -14,7 +14,7 @@ var pouchRepStream = require('pouchdb-replication-stream');
 
 // register pouch-replication-stream as a plugin
 pouch.plugin(pouchRepStream.plugin);
-pouch.adapter('writeableStream', pouchRepStream.adapters.writeableStream);
+pouch.adapter('writeableStream', pouchRepStream.adapters.writableStream);
 
 /**
  * ExpressPouchReplicationStream
@@ -36,10 +36,7 @@ var ExpressPouchReplicationStream = function(opts){
   var scope = {
     url             : typeof opts === 'string' ? opts : opts.url,
     dbReq           : !!opts.dbReq,
-    replicationOpts : {
-      filter        : opts.filter || '',
-      query_string  : opts.query_string || {}
-    }
+    replicationOpts : opts.replication || {}
   };
   // return function that fulfills the request
   return function(req, res, next){  

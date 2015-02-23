@@ -2,6 +2,20 @@
 
 This module provides an express endpoint for streaming bulk couchdb changes to pouchdb. It makes use of the great [PouchDB Replication Stream](https://github.com/nolanlawson/pouchdb-replication-stream) module.
 
+- [Install](#install)
+- [Usage](#usage)
+- [Database Name in Request](#db-name-in-request)
+- [Filtered Replication](#filtered-replication)
+- [Replication Options](#replication-options)
+
+### Install
+
+Install with npm:
+
+```bash
+npm i express-pouchdb-replication-stream
+```
+
 ### Usage
 
 Basic usage enables streaming of one db to the client:
@@ -14,7 +28,7 @@ var app = express();
 app.use('/api/couchdb', repStream('http://user:pass@localhost:5984/db'));
 ```
 
-### Database in Request
+### Database Name in Request
 
 If you have per-user databases, or you want to get changes from different databases based on the request, this will work:
 
@@ -32,9 +46,11 @@ In order to do filtered replication, there are two options. If the parameters ar
 ```javascript
 app.use('/api/couchdb', repStream({
   url           : 'http://user:pass@localhost:5984/',
-  filter        : 'myFilterName',
-  query_params  : {
-    prop1       : 'myFilterParameter1'
+  replication   : {
+    filter        : 'myFilterName',
+    query_params  : {
+      prop1       : 'myFilterParameter1'
+    }
   }
 });
 ```
@@ -47,11 +63,29 @@ app.use('/api/couchdb/:filterFunc/:filterBy', function(req, res, next){
   var filterBy = req.params.filterBy;
   repStream({
     url           : 'http://user:pass@localhost:5984/',
-    filter        : filterFunc,
-    query_params  : {
-      docName     : filterBy
+    replication   : {
+      filter        : filterFunc,
+      query_params  : {
+        docName     : filterBy
+      }
     }
   })(req, res, next);
 });
 ```
+
+### Replication Options
+
+Allowed replication options:
+
+```
+batch_size
+batches_limit
+filter
+doc_ids
+query_params
+since
+view
+```
+
+[CouchDB Replication Options](http://wiki.apache.org/couchdb/Replication)
 
