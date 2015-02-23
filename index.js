@@ -32,9 +32,9 @@ pouch.adapter('writeableStream', pouchRepStream.adapters.writeableStream);
  * http://wiki.apache.org/couchdb/Replication#Filtered_Replication
  */
 var ExpressPouchReplicationStream = function(opts){
-  this.url = opts.url;
+  this.url = typeof opts === 'string' ? opts : opts.url;
   this.dbReq = !!opts.dbReq;
-  this.replicationOpts = opts.replication;
+  this.replicationOpts = opts.replication || {};
   return this.run.bind(this);
 };
 

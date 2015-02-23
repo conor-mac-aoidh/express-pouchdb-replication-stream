@@ -12,15 +12,13 @@ var app = express();
 
 var repStream = require('express-pouchdb-replication-stream');
 
-app.use('/api/couchdb', repStream({
-  url : 'http://user:pass@localhost:5984/db'
-});
+app.use('/api/couchdb', repStream('http://user:pass@localhost:5984/db'));
 
 ```
 
 ### Database in Request
 
-If you have per-user databases, or you want to replicate to different databases based on the request, this will work:
+If you have per-user databases, or you want to get changes from different databases based on the request, this will work:
 
 ```
 app.use('/api/couchdb/:db', repStream({
