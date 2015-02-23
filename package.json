@@ -1,0 +1,30 @@
+{
+  "name": "express-pouchdb-replication-stream",
+  "version": "1.0.1",
+  "description": "An express endpoint for streaming bulk couchdb changes to pouchdb.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/conor-mac-aoidh/express-pouchdb-replication-stream.git"
+  },
+  "keywords": [
+    "pouch",
+    "pouchdb",
+    "plugin",
+    "stream",
+    "replication",
+    "couch",
+    "couchdb"
+  ],
+  "author": "",
+  "license": "Apache",
+  "bugs": {
+    "url": "https://github.com/conor-mac-aoidh/express-pouchdb-replication-stream/issues"
+  },
+  "scripts": {},
+  "dependencies": {
+    "pouchdb": "^3.3.1",
+    "pouchdb-replication-stream": "^1.2.0"
+  },
+  "devDependencies": {}
+}
