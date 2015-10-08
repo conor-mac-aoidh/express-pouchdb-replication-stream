@@ -36,7 +36,7 @@ If you have per-user databases, or you want to get changes from different databa
 app.use('/api/couchdb/:db', repStream({
   url     : 'http://user:pass@localhost:5984/',
   dbReq   : true
-});
+}));
 ```
 
 ### Filtered Replication
