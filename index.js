@@ -46,7 +46,10 @@ var ExpressPouchReplicationStream = function(opts){
       url += '/' + req.params.db;
     }
     var db = new pouch(url);
-    return db.dump(res, this.replicationOpts);
+    return db.dump(res, this.replicationOpts)
+      .catch(function(err){
+        res.status(500).send(err);
+      });
   }.bind(scope);
 };
 
