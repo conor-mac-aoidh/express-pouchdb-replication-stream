@@ -33,24 +33,33 @@ pouch.adapter('writableStream', pouchRepStream.adapters.writableStream);
  */
 var ExpressPouchReplicationStream = function(opts){
   // parse options
-  var scope = {
-    url             : typeof opts === 'string' ? opts : opts.url,
-    dbReq           : !!opts.dbReq,
-    replicationOpts : opts.replication || {}
+  var config = {
+    url: typeof opts === 'string' ? opts : opts.url,
+    dbReq: !!opts.dbReq,
+    replicationOpts : opts.replication || {},
+    error: opts.error || false
   };
+
   // return function that fulfills the request
   return function(req, res, next){  
-    var url = this.url;
+
+    var url = config.url;
     // db is passed in the request
-    if(this.dbReq){
+    if(config.dbReq){
       url += '/' + req.params.db;
     }
+
+    // stream db to express response
     var db = new pouch(url);
-    return db.dump(res, this.replicationOpts)
+    return db.dump(res, config.replicationOpts)
       .catch(function(err){
+        // custom error handler
+        if(typeof config.error === 'function'){
+          return config.error(err);
+        }
         res.status(500).send(err);
       });
-  }.bind(scope);
+  };
 };
 
 module.exports = ExpressPouchReplicationStream;
