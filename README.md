@@ -7,6 +7,7 @@ This module provides an express endpoint for streaming bulk couchdb changes to p
 - [Database Name in Request](#db-name-in-request)
 - [Filtered Replication](#filtered-replication)
 - [Replication Options](#replication-options)
+- [Error Handling](#error-handling)
 
 ### Install
 
@@ -89,3 +90,21 @@ view
 
 [PouchDB Replication Options](http://pouchdb.com/api.html#replication)
 [CouchDB Replication Options](http://wiki.apache.org/couchdb/Replication)
+
+### Error Handling
+
+The default behavior is to send an error response with a `500` error code and
+the error message. To overwrite this, pass a method to the `error` option:
+
+```javascript
+repStream({
+  url     : 'http://user:pass@localhost:5984/',
+  error   : function(err){
+    // do what you will with `err` here
+    console.log(err);
+    res.send(err);
+  }
+});
+
+```
+
